@@ -1,0 +1,17 @@
+[2022-02-14 07:06:38,225] INFO Cleaner 0: Beginning cleaning of log __consumer_offsets-25 (kafka.log.LogCleaner)
+[2022-02-14 07:06:38,226] INFO Cleaner 0: Building offset map for __consumer_offsets-25... (kafka.log.LogCleaner)
+[2022-02-14 07:06:38,247] INFO Cleaner 0: Building offset map for log __consumer_offsets-25 for 1 segments in offset range [0, 64). (kafka.log.LogCleaner)
+[2022-02-14 07:06:38,261] INFO Cleaner 0: Offset map for log __consumer_offsets-25 complete. (kafka.log.LogCleaner)
+[2022-02-14 07:06:38,261] INFO Cleaner 0: Cleaning log __consumer_offsets-25 (cleaning prior to Mon Feb 07 06:59:09 UTC 2022, discarding tombstones prior to upper bound deletion horizon Thu Jan 01 00:00:00 UTC 1970)... (kafka.log.LogCleaner)
+[2022-02-14 07:06:38,264] INFO Cleaner 0: Cleaning LogSegment(baseOffset=0, size=10502, lastModifiedTime=1644217149496, largestRecordTimestamp=Some(1644217149499)) in log __consumer_offsets-25 into 0 with an upper bound deletion horizon 0 computed from the segment last modified time of 1644217149496,retaining deletes. (kafka.log.LogCleaner)
+[2022-02-14 07:06:38,286] INFO Cleaner 0: Swapping in cleaned segment LogSegment(baseOffset=0, size=367, lastModifiedTime=1644217149496, largestRecordTimestamp=Some(1644217149499)) for segment(s) List(LogSegment(baseOffset=0, size=10502, lastModifiedTime=1644217149496, largestRecordTimestamp=Some(1644217149499))) in log Log(dir=/tmp/kafka-logs/__consumer_offsets-25, topicId=8NyYGvF9QNe6CTMyRgiwOA, topic=__consumer_offsets, partition=25, highWatermark=68, lastStableOffset=68, logStartOffset=0, logEndOffset=68) (kafka.log.LogCleaner)
+[2022-02-14 07:06:38,297] INFO [kafka-log-cleaner-thread-0]: 
+	Log cleaner thread 0 cleaned log __consumer_offsets-25 (dirty section = [0, 64])
+	0.0 MB of log processed in 0.1 seconds (0.1 MB/sec).
+	Indexed 0.0 MB in 0.0 seconds (0.3 Mb/sec, 50.0% of total time)
+	Buffer utilization: 0.0%
+	Cleaned 0.0 MB in 0.0 seconds (0.3 Mb/sec, 50.0% of total time)
+	Start size: 0.0 MB (64 messages)
+	End size: 0.0 MB (4 messages)
+	96.5% size reduction (93.8% fewer messages)
+ (kafka.log.LogCleaner)

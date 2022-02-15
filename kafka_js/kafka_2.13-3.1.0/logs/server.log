@@ -1,0 +1,2 @@
+[2022-02-15 04:41:10,594] INFO [LocalLog partition=test-1, dir=/tmp/kafka-logs] Rolled new log segment at offset 56 in 1 ms. (kafka.log.LocalLog)
+[2022-02-15 04:41:10,596] INFO [LocalLog partition=test-0, dir=/tmp/kafka-logs] Rolled new log segment at offset 678 in 1 ms. (kafka.log.LocalLog)

@@ -16,6 +16,7 @@ class ConsumeWrapper:
         self.timeout = args['timeout']; # timeout facotr for wating late packet
         self.fps = args['fps'];
         self.complete_flag = (1 << len(args['topics'])) - 1;
+        self.init_flag = 0x00;
         self.flag = 0x00;
 
     def polling_start(self):
@@ -25,9 +26,9 @@ class ConsumeWrapper:
         self.consumer.commit({ key : OffsetAndMetadata(offset=dest_offset, metadata=None)});
         self.partial_offset[key] = dest_offset;
 
-    def commit_partitions(self):
+    def commit_partitions(self, dest_offset):
         for key in self.keys:
-            self.commit_partition(key, self.partial_offset[key]+1);
+            self.commit_partition(key, dest_offset);
 
     def commit_to_zero(self):
         for key in self.keys:
@@ -35,8 +36,8 @@ class ConsumeWrapper:
 
     def seek_last_commit(self, key):
         commit = self.consumer.committed(key) if self.consumer.committed(key) else 0;
-        self.consumer.seek(key, commit);
-        self.partial_offset[key] = commit;
+        self.consumer.seek(key, commit + 1);
+        #self.partial_offset[key] = commit;
         print('Last commit: ', commit);
 
     def seek_last_commits(self):
@@ -47,49 +48,54 @@ class ConsumeWrapper:
         self.commit_to_zero();
         self.seek_last_commits();
         for msg in self.consumer:
-            print(msg.partition, msg.offset);
+            print(msg.partition, msg.offset, msg.value);
 
     def fetch_message(self):
         self.commit_to_zero();
+        self.commit_partitions(6700);
         self.seek_last_commits();
         for msg in self.consumer:
             topic_obj = TopicPartition(msg.topic, msg.partition);
             if(self.flag == self.complete_flag):
                 print("#### Goto next step ####");
                 self.flag = 0x00;
-                self.commit_partitions();
+                self.commit_partitions(self.partial_offset[topic_obj] + 1);
 
             elif(msg.offset == self.partial_offset[topic_obj] + 1):
-                self.seek_last_commit(topic_obj);
                 self.flag = self.flag | (1 << msg.partition);
-                print(msg.partition, 
+                self.seek_last_commit(topic_obj);
+                print(msg.partition,
+                        msg.offset,
                         self.flag, 
                         self.consumer.committed(topic_obj), 
                         self.partial_offset[topic_obj]);
+            else :
+                print("#### FALSE LOGS ####", msg.partition, msg.offset, self.partial_offset[topic_obj] + 1);
 
 if __name__ == '__main__':
     processor = ConsumeWrapper(group_id='cons1',
             number_of_max_record=1,
             auto_commit=False,
             boot_server='localhost:9092',
-            topics=[TopicPartition('test2', 0),
-                TopicPartition('test2', 1),
-                TopicPartition('test2', 2),
-                TopicPartition('test2', 3),
-                TopicPartition('test2', 4),
-                TopicPartition('test2', 5),
-                TopicPartition('test2', 6),
-                TopicPartition('test2', 7),
-                TopicPartition('test2', 8),
-                TopicPartition('test2', 9),
-                TopicPartition('test2', 10),
-                TopicPartition('test2', 11),
-                TopicPartition('test2', 12),
-                TopicPartition('test2', 13),
-                TopicPartition('test2', 14)],
+            topics=[TopicPartition('test', 0),
+                TopicPartition('test', 1),
+                TopicPartition('test', 2),
+                TopicPartition('test', 3),
+                TopicPartition('test', 4),
+                TopicPartition('test', 5),
+                TopicPartition('test', 6),
+                TopicPartition('test', 7),
+                TopicPartition('test', 8),
+                TopicPartition('test', 9),
+                TopicPartition('test', 10),
+                TopicPartition('test', 11),
+                TopicPartition('test', 12),
+                TopicPartition('test', 13),
+                TopicPartition('test', 14)],
             tolerance=50,
             timeout=1000,
             fps=15);
+
     processor.polling_start();
     processor.fetch_message();
     #processor.fetch_message_as_normal();

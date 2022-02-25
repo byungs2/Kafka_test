@@ -9,11 +9,11 @@ def on_send_success(record_metadata):
 
 producer = KafkaProducer(bootstrap_servers='localhost:9092');
 
-string_val = b'HELLO';
+string_val = b'HELLOMAN';
 
 for _ in range(50):
     for i in range(0, 15):
-        future = producer.send('test2', string_val, partition=i);
+        future = producer.send('test', string_val, partition=i);
         try:
             record_metadata = future.get(timeout=10);
         except:
